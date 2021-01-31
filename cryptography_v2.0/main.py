@@ -46,9 +46,10 @@ rotor4 = ['E', 'S', 'O', 'V', 'P', 'Z', 'J', 'A', 'Y', 'Q', 'U', 'I', 'R', 'H', 
           'C', 'M', 'W', 'B']
 rotor5 = ['V', 'Z', 'B', 'R', 'G', 'I', 'T', 'Y', 'U', 'P', 'S', 'D', 'N', 'H', 'L', 'X', 'A', 'W', 'M', 'J', 'Q', 'O',
           'F', 'E', 'C', 'K']
-temp = []
 
-entered_msg, prepared_msg, encrypted_msg, current_rotor, my_rotor1, my_rotor2, my_rotor3,  = [], [], [], [], [], [], []
+
+temp, entered_msg, prepared_msg, encrypted_msg, current_rotor, my_rotor1, my_rotor2, my_rotor3 = \
+    [], [], [], [], [], [], [], []
 
 
 # ENTER KEY (ONLY 3 LITERALS)
@@ -73,9 +74,6 @@ def show_list(list_to_show):
         counter += 1
         if counter % 4 == 0:
             print(" ", end="")
-        if counter >= 20:
-            print(" ")
-            counter = 0
 
 
 # SELECT THREE FROM FIVE ROTORS TO USAGE
@@ -183,11 +181,7 @@ def encrypt():
     str_key = copy.deepcopy(enter_the_key())
     encoding_list = copy.deepcopy(to_encoding_list)
 
-    # print(encoding_list)
-
-
 #                       THREE STAGE OF ROTOR CORRECTION AND ENCRYPT PROCESS
-
     counter_of_rotor = 0
 
     # TAKE A ROTORS AND USE THE KEY CORRECTION FOR HIM
@@ -207,7 +201,6 @@ def encrypt():
                 rotor = rotor_key_correct(rotor, str_key[2])
 
             # ENCRYPT PROCESS
-            # print("counter: ", counter_of_rotor)
             temp_index_of_char = ord((encoding_list[encrypt_cycle_value])) + ord((rotor[counter_of_rotor])) - 65
 
             if temp_index_of_char > 90:
@@ -227,24 +220,19 @@ def encrypt():
 def decrypt():
     print()
 
-    # global encrypted_msg
     encrypted_msg = []
     encrypted_str = input("Enter encrypt message:")
     str_key = enter_the_key()
 
     for element in range(len(encrypted_str)):
         if encrypted_str[element] != " ":
-            # print(element, " :", len(encrypted_str), encrypted_str[element])
             encrypted_msg.append((encrypted_str[element]).upper())
 
-    print(encrypted_msg)
-
     #                       THREE STAGE OF ROTOR CORRECTION AND ENCRYPT PROCESS
-
-    counter_of_rotor = 0
+    select_three_rotors()
 
     # TAKE A ROTORS AND USE THE KEY CORRECTION FOR HIM
-    select_three_rotors()
+    counter_of_rotor = 0
 
     for stage in range(3):
         for decrypt_cycle_value in range(len(encrypted_msg)):
@@ -260,9 +248,7 @@ def decrypt():
                 rotor = rotor_key_correct(rotor, str_key[2])
 
             # DECRYPT PROCESS
-            # print("counter: ", counter_of_rotor)
             temp_index_of_char = ord((encrypted_msg[decrypt_cycle_value])) - ord((rotor[counter_of_rotor])) + 65
-            print(temp_index_of_char)
 
             if temp_index_of_char < 65:
                 temp_index_of_char += 26
@@ -275,11 +261,6 @@ def decrypt():
 
     print("\n\tDECRYPT MESSAGE IS:")
     show_list(encrypted_msg)
-
-
-# CREATE ENCODING LIST FROM PREVIOUS PREPARING
-    # str_key = copy.deepcopy(enter_the_key())
-    # encoding_list = copy.deepcopy(to_encoding_list)
 
 
 while True:
