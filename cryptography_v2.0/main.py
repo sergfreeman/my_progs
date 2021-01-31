@@ -1,11 +1,10 @@
 import copy
 
 
-
 # This project showing power of cryptographic
 
 
-#                        Wehrmacht Enigma 1938
+#                      Wehrmacht Enigma 1938
 
 # Rotor I — V «Enigma»:
 
@@ -42,6 +41,33 @@ rotor5 = ['V', 'Z', 'B', 'R', 'G', 'I', 'T', 'Y', 'U', 'P', 'S', 'D', 'N', 'H', 
 temp = []
 
 entered_msg, prepared_msg, encrypted_msg, current_rotor, my_rotor1, my_rotor2, my_rotor3,  = [], [], [], [], [], [], []
+
+
+# ENTER KEY (ONLY 3 LITERALS)
+def enter_the_key():
+    while True:
+        print("\n\n\tEnter the KEY(some three literals)")
+        str_key = input("Key: ")
+        try:
+            if len(str_key) == 3 and str_key.isalpha():
+                str_key = str_key.upper()
+                return str_key
+
+        except ValueError:
+            print("Error, length or symbols of key is not correct. Try it again.")
+
+
+# SHOW LIST
+def show_list(list_to_show):
+    counter = 0
+    for items in list_to_show:
+        print(items, end="")
+        counter += 1
+        if counter % 4 == 0:
+            print(" ", end="")
+        if counter >= 20:
+            print(" ")
+            counter = 0
 
 
 # SELECT THREE FROM FIVE ROTORS TO USAGE
@@ -126,11 +152,9 @@ def rotor_key_correct(rotor_input, key):
 def encrypt():
 
     to_encoding_list = []
-    # my_rotor1 = []
-    # my_rotor2 = []
-    # my_rotor3 = []
 
     while True:
+        print()
         str_tmp = input("Enter some simple text(only 500 literals alphabet or special symbols like: '.', ','):")
         for char in str_tmp:
             if char.isalpha():
@@ -144,29 +168,19 @@ def encrypt():
         if len(to_encoding_list) > 500:
             to_encoding_list = to_encoding_list[:500]
 
-        print("\n\tPREPARING TEXT TO ENCRYPT: ", to_encoding_list)
+        print("\nPREPARING TEXT TO ENCRYPT:")
+        show_list(to_encoding_list)
         break
 
-    # ENTER KEY (ONLY 3 LITERALS)
-    while True:
-        print("\n\tEnter the KEY(som three literals)")
-        str_key = input("Key: ")
-        try:
-            if len(str_key) == 3 and str_key.isalpha():
-                str_key = str_key.upper()
-                break
-        except ValueError:
-            print("Error, length or symbols of key is not correct. Try it again.")
-
     # CREATE ENCODING LIST FROM PREVIOUS PREPARING
+    str_key = copy.deepcopy(enter_the_key())
     encoding_list = copy.deepcopy(to_encoding_list)
 
-    print(encoding_list)
+    # print(encoding_list)
 
 
 #                       THREE STAGE OF ROTOR CORRECTION AND ENCRYPT PROCESS
 
-    # temp_index_of_char = None
     counter_of_rotor = 0
 
     # TAKE A ROTORS AND USE THE KEY CORRECTION FOR HIM
@@ -186,7 +200,7 @@ def encrypt():
                 rotor = rotor_key_correct(rotor, str_key[2])
 
             # ENCRYPT PROCESS
-            print("counter: ", counter_of_rotor)
+            # print("counter: ", counter_of_rotor)
             temp_index_of_char = ord((encoding_list[encrypt_cycle_value])) + ord((rotor[counter_of_rotor])) - 65
 
             if temp_index_of_char > 90:
@@ -198,11 +212,12 @@ def encrypt():
             if counter_of_rotor >= 26:
                 counter_of_rotor = 0
 
-    print("Encoding list is:\t\n ", encoding_list)
+    print("\n\tENCRYPT MESSAGE IS:")
+    show_list(encoding_list)
 
 
 while True:
-    print("\n\tEmulator of encrypt machine 'Wehrmacht Enigma 1938'")
+    print("\n\n\t EMULATOR OF ENCRYPT MACHINE 'Wehrmacht Enigma 1938'")
     print("-" * 58)
     print("""
     \t1...Encrypt text
