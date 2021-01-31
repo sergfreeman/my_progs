@@ -149,7 +149,6 @@ def rotor_key_correct(rotor_input, key):
     for element in range(26):
         tmp = ord(rotor_output[element]) + ord(key) - 65
         if tmp > 90:
-            # print("value error", tmp)
             tmp -= 26
 
         rotor_output[element] = chr(tmp)
@@ -224,6 +223,65 @@ def encrypt():
     show_list(encoding_list)
 
 
+# DECRYPT PART
+def decrypt():
+    print()
+
+    # global encrypted_msg
+    encrypted_msg = []
+    encrypted_str = input("Enter encrypt message:")
+    str_key = enter_the_key()
+
+    for element in range(len(encrypted_str)):
+        if encrypted_str[element] != " ":
+            # print(element, " :", len(encrypted_str), encrypted_str[element])
+            encrypted_msg.append((encrypted_str[element]).upper())
+
+    print(encrypted_msg)
+
+    #                       THREE STAGE OF ROTOR CORRECTION AND ENCRYPT PROCESS
+
+    counter_of_rotor = 0
+
+    # TAKE A ROTORS AND USE THE KEY CORRECTION FOR HIM
+    select_three_rotors()
+
+    for stage in range(3):
+        for decrypt_cycle_value in range(len(encrypted_msg)):
+
+            if stage == 0:
+                rotor = my_rotor1
+                rotor = rotor_key_correct(rotor, str_key[0])
+            elif stage == 1:
+                rotor = my_rotor2
+                rotor = rotor_key_correct(rotor, str_key[1])
+            else:
+                rotor = my_rotor3
+                rotor = rotor_key_correct(rotor, str_key[2])
+
+            # DECRYPT PROCESS
+            # print("counter: ", counter_of_rotor)
+            temp_index_of_char = ord((encrypted_msg[decrypt_cycle_value])) - ord((rotor[counter_of_rotor])) + 65
+            print(temp_index_of_char)
+
+            if temp_index_of_char < 65:
+                temp_index_of_char += 26
+
+            encrypted_msg[decrypt_cycle_value] = chr(temp_index_of_char)
+            counter_of_rotor += 1
+
+            if counter_of_rotor >= 26:
+                counter_of_rotor = 0
+
+    print("\n\tDECRYPT MESSAGE IS:")
+    show_list(encrypted_msg)
+
+
+# CREATE ENCODING LIST FROM PREVIOUS PREPARING
+    # str_key = copy.deepcopy(enter_the_key())
+    # encoding_list = copy.deepcopy(to_encoding_list)
+
+
 while True:
     print("\n\n\t EMULATOR OF ENCRYPT MACHINE 'Wehrmacht Enigma 1938'")
     print("-" * 58)
@@ -238,3 +296,5 @@ while True:
         quit(0)
     elif menu_choice == "1":
         encrypt()
+    elif menu_choice == "2":
+        decrypt()
