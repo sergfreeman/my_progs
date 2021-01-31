@@ -2,7 +2,6 @@ import copy
 
 # This project showing power of cryptographic
 
-
 #                      Wehrmacht Enigma 1938
 
 # Rotor I — V «Enigma»:
