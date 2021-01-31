@@ -228,7 +228,7 @@ def decrypt():
         if encrypted_str[element] != " ":
             encrypted_msg.append((encrypted_str[element]).upper())
 
-    #                       THREE STAGE OF ROTOR CORRECTION AND ENCRYPT PROCESS
+    #                       THREE STAGE OF ROTOR CORRECTION AND DECRYPT PROCESS
     select_three_rotors()
 
     # TAKE A ROTORS AND USE THE KEY CORRECTION FOR HIM
