@@ -16,57 +16,76 @@ class Galaxy:
         self.coord_y = y
         self.coord_z = z
         self.size = size
-        self.type_of_creature = type_c
+        self.type_of_creatures = type_c
         self.status = status
 
     def life_time(self):
         pass
+    galaxys_list = list()
+    stars_list = list()
+    type_of_creatures = 'Galaxys'
+
+# Generate random values of the coordinates of galaxies and stars
+    @staticmethod
+    def generator(object_type, quantity):
+        if object_type == Galaxy.galaxys_list:
+            type_of_creatures = 'Galaxy'
+            multiplicative = 0.5
+            min_of_quantity = 1
+        else:
+            type_of_creatures = 'Stars'
+            multiplicative = 5
+            min_of_quantity = len(Star.stars_list)
+        for _ in range(0, random.randint(min_of_quantity, quantity)):
+            name = type_of_creatures + "_" + chr(random.randint(65, 90)) + chr(random.randint(65, 90)) \
+                   + str(random.randint(1, 10))
+            x_coord = random.randint(0, 1000)
+            y_coord = random.randint(0, 1000)
+            z_coord = random.randint(0, 1000)
+            s_size = random.randint(1, 100) / multiplicative
+
+            object_type.append([name, x_coord, y_coord, z_coord, s_size])
+
+# Draw line
+    @staticmethod
+    def draw_line(sign, quantity):
+        print(f'{sign}'*quantity)
+
+# Created report about galaxys and stars
+    @classmethod
+    def show_world(cls):
+
+        if cls.type_of_creatures == 'Galaxys':
+            current_list = cls.galaxys_list
+        else:
+            current_list = cls.stars_list
+
+        for _ in range(len(current_list)):
+            print(f'\t{current_list[_][0]} X:{current_list[_][1]} Y:{current_list[_][2]} Z:{current_list[_][3]} '
+                  f'SIZE:{current_list[_][4]}')
+        return cls
 
 
 class Star(Galaxy):
     type_of_creatures = 'Star'
 
 
-galaxys_list = list()
-stars_list = list()
+Galaxy.draw_line('-', 55)
 
+print("\t\t\t* LET'S CREATE THE WORLD *")
 
-def generator(object_type, quantity):
-    if object_type == galaxys_list:
-        multiplicative = 0.5
-    else:
-        multiplicative = 5
-    for _ in range(0, random.randint(1, quantity)):
-        name = type_of_creatures + "_" + chr(random.randint(65, 90)) + chr(random.randint(65, 90)) \
-               + str(random.randint(1, 10))
-        x_coord = random.randint(0, 100)
-        y_coord = random.randint(0, 100)
-        z_coord = random.randint(0, 100)
-        s_size = random.randint(1, 100) / multiplicative
-
-        object_type.append([name, x_coord, y_coord, z_coord, s_size])
-
-
-for obj in range(random.randint(1, 5)):
-    type_of_creatures = 'Galaxy: '
-    object_type = galaxys_list
-    generator(galaxys_list, 1)
-
-for obj in range(random.randint(1, 25)):
-    type_of_creatures = 'Star: '
-    object_type = stars_list
-    generator(stars_list, len(galaxys_list))
-    # print(len(galaxys_list))
-print('\t\t\t* LETS CREATE THE WORLD *')
-
+# All galaxys
 print("Galaxys:")
-for _ in range(len(galaxys_list)):
-    print(f'\t{galaxys_list[_][0]} X:{galaxys_list[_][1]}  Y:{galaxys_list[_][2]}  Z:{galaxys_list[_][3]} '
-          f'SIZE:{galaxys_list[_][4]}')
+g = Galaxy
+g.generator(Galaxy.galaxys_list, 5)
 
 
-print('Stars:')
-for _ in range(len(stars_list)):
-    print(f'\t{stars_list[_][0]} X:{stars_list[_][1]}  Y:{stars_list[_][2]}  Z:{stars_list[_][3]} '
-          f'SIZE:{stars_list[_][4]}')
+g.show_world()
+
+# All stars
+print("Stars:")
+s = Star
+s.generator(Star.stars_list, 15)
+s.show_world()
+Galaxy.draw_line('-', 55)
 
