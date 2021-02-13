@@ -1,5 +1,5 @@
 import random
-# from colorama import Fore, Back, Style
+
 
 """
     З огляду на те, що маса ядра зірки пропорційна її повній масі (М), 
