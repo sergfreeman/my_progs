@@ -12,17 +12,16 @@ import random
 
 
 class Galaxy:
-    def __init__(self, n, x, y, z, size,  type_c="Galaxy", status=True):
-        self.names = n
-        self.coord_x = x
-        self.coord_y = y
-        self.coord_z = z
-        self.size = size
-        self.type_of_creatures = type_c
-        self.status = status
+    # def __init__(self, n, x, y, z, size,  type_c="Galaxy", status=True):
+    #     self.names = n
+    #     self.coord_x = x
+    #     self.coord_y = y
+    #     self.coord_z = z
+    #     self.size = size
+    #     self.type_of_creatures = type_c
+    #     self.status = status
 
-    def life_time(self):
-        pass
+
     galaxys_list = list()
     stars_list = list()
     type_of_creatures = 'Galaxy'
@@ -101,23 +100,58 @@ class Star(Galaxy):
     type_of_creatures = 'Star'
 
 
-Galaxy.set_title("""
-step 1          * LET'S CREATE THE WORLD *
-""")
-# Show galaxys
-print("Galaxys:")
-g = Galaxy
-g.generator(Galaxy.galaxys_list, 5)
-g.show_world()
+def big_bang(val):
+    Galaxy.set_title("""
+    step 1          * LET'S CREATE THE WORLD *
+    """)
 
-# Show stars
-print("Stars:")
-s = Star
-s.generator(Star.stars_list, 100)
-s.show_world()
-Galaxy.set_title("""
-step 2          * SORT STARS BY GALAXIES *
-""")
-# Show sort star lists
-Galaxy.sort_stars_by_galaxies()
+    # Show galaxys
+    print("Galaxys:")
+    g = Galaxy
+    g.generator(Galaxy.galaxys_list, 5)
+    g.show_world()
 
+    # Show stars
+    print("Stars:")
+    s = Star
+    s.generator(Star.stars_list, val)
+    s.show_world()
+
+    # Show sort star lists
+    Galaxy.set_title("""
+    step 2          * SORT STARS BY GALAXIES *
+    """)
+    Galaxy.sort_stars_by_galaxies()
+    # Exit point
+    exit(0)
+
+
+# Enter quantity of stars and word 'GOD' to big bang...
+def starter():
+    while True:
+        Galaxy.set_title("""
+            In the beginning was the Word...
+        set the quantity of stars (50..150) and write 'GOD' to create your world
+        """)
+        try:
+            star_val = int(input(">>"))
+            if 49 < star_val < 151:
+                print(f'good, we create till {star_val} stars in our world...')
+            else:
+                print("Your number is not correct, try again in interval 50..150")
+                continue
+        except ValueError:
+            print("Your value is not correct, try again int number")
+            continue
+        else:
+            try:
+                begin_word = input(">>")
+                if begin_word == 'GOD':
+                    big_bang(star_val)
+                else:
+                    print("Your word is not correct, try again, write word GOD")
+            except ValueError:
+                print('Something wrong...')
+
+
+starter()
