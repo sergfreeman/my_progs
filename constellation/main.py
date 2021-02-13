@@ -2,25 +2,20 @@ import random
 
 
 """
-    З огляду на те, що маса ядра зірки пропорційна її повній масі (М), 
-    шляхом розрахунків одержуємо приблизне співвідношення: 
-    тривалість перетворення водню в гелій дорівнює 10 M/L млрд. років, 
-    де маса М і світність L зірки виражені в масах і світності Сонця. 
-    Для зірок з масою, близькою до сонячної, L = М  (це випливає зі спостережень). 
-    Звідси знаходимо, що час їхнього життя 10/М  млрд. років.
+    step1   Create universe with galaxys and stars
+    step2   Sorting all stars for galaxys
 """
 
 
 class Galaxy:
-    # def __init__(self, n, x, y, z, size,  type_c="Galaxy", status=True):
-    #     self.names = n
-    #     self.coord_x = x
-    #     self.coord_y = y
-    #     self.coord_z = z
-    #     self.size = size
-    #     self.type_of_creatures = type_c
-    #     self.status = status
-
+    def __init__(self, n, x, y, z, size,  type_c="Galaxy", status=True):
+        self.names = n
+        self.coord_x = x
+        self.coord_y = y
+        self.coord_z = z
+        self.size = size
+        self.type_of_creatures = type_c
+        self.status = status
 
     galaxys_list = list()
     stars_list = list()
@@ -47,6 +42,14 @@ class Galaxy:
 
             object_type.append([name, x_coord, y_coord, z_coord, s_size])
 
+# Create objects
+            if type_of_creatures == 'Galaxy':
+                name = Galaxy(name, x_coord, y_coord, z_coord, s_size)
+                name.status = True
+            else:
+                name = Star(name, x_coord, y_coord, z_coord, s_size)
+                name.status = True
+
 # Draw line
     @staticmethod
     def draw_line(sign, quantity):
@@ -66,6 +69,7 @@ class Galaxy:
                   f'SIZE:{current_list[_][4]}')
         return cls
 
+# Sorting star
     @staticmethod
     def sort_stars_by_galaxies():
         for galactic in Galaxy.galaxys_list:
@@ -83,9 +87,7 @@ class Galaxy:
             else:
                 print(f'{galactic[0]}\n\t( X:{galactic[1]} Y:{galactic[2]} Z:{galactic[3]} SIZE:{galactic[4]} ),'
                       f' consist of a stars:')
-                # print(gal_name)
                 for i in range(len(gal_name)):
-                    # print(gal_name[i][0])
                     print(f'\t{gal_name[i][0]} X:{gal_name[i][1]} Y:{gal_name[i][2]} Z:{gal_name[i][3]}'
                           f' SIZE:{gal_name[i][4]}')
 
