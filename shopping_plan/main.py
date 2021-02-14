@@ -1,11 +1,18 @@
+import os
+
+"""
+        Create and deletes reports, print from him.
+"""
 
 
 class NewReport:
-    def __init__(self, n, rt, r_q=0):
+
+    def __init__(self, n):
         try:
 
+            # Create name of new report
             self.name = n
-            self.name = input("Enter the name of your new report:")
+            self.name = input(">Enter the name of your new report>")
             if self.name == '':
                 print("Error, empty name")
                 start.menu()
@@ -18,11 +25,10 @@ class NewReport:
             start.menu()
 
         else:
-
-            self.report_text = rt
             self.report_text = list()
-
             self.new_report_menu()
+
+        # Add new report to the report list
         try:
             f = open("ini.txt", "x")
             print(f.read())
@@ -30,24 +36,26 @@ class NewReport:
             f = open("ini.txt", "w")
             self.report_quantity = list()
 
+    # Add new text to the report file
     def enter_new_line(self):
-        text = input(">write some text>")
+        text = input(">Write some text>")
         self.report_text.append(""+text+"\n")
 
-# Report actions menu
+    # Report actions menu
     def new_report_menu(self):
         NewReport.enter_new_line(self)
         while True:
-            new_report_choice = input("Enter the action (N:new line/S:save and exit/E:exit without saving):")
+            Notebook.chars_line('-', 80)
+            new_report_choice = input("Enter the action (A:add new line/S:save and exit/E:exit without saving):")
 
-            if new_report_choice == 'N':
+            if new_report_choice == 'A':
                 self.enter_new_line()
-            elif new_report_choice == 'S':
 
+            elif new_report_choice == 'S':
                 f = open(self.name + '.txt', "w")
                 for line in self.report_text:
                     f.write(line)
-                    print(line)
+                    # print(line)
                 f.close()
 
                 f = open('ini.txt', "a")
@@ -65,26 +73,78 @@ class NewReport:
 class OpenReport:
     def __init__(self, ol):
         self.open_file_list = ol
-        open_file_list = list()
 
         f = open('ini.txt', "r")
         tmp_str = f.read()
-        print(tmp_str)
         open_file_list = tmp_str.split(sep=',')
         open_file_list.pop()  # delete last empty element
 
         # Show all reports files
+
         print("\n\t\tAll reports files(choose number to open):")
+
+        if len(open_file_list) == 0:  # Exits to main menu if have not report files
+            print('You have not report files')
+            start.menu()
+
         for idx, file in enumerate(open_file_list):
             print(idx, "\t File:" + file)
+        Notebook.chars_line('-', 80)
 
-        report_files_choice = input('>')
+        # To open files menu
+        while True:
+            try:
 
+                report_files_choice = int(input('>>'))
+                Notebook.chars_line('-', 80)
+                if 0 <= report_files_choice < len(open_file_list):
+                    f = open(open_file_list[report_files_choice] + '.txt', "r")
+                    print(f'\n\t\tReport: {open_file_list[report_files_choice]}\n')
+                    print(f.read())
+                    f.close()
 
+                    Notebook.chars_line('-', 80)
+                    break
 
+                else:
+                    print('Error, invalid number of your report')
+            except (ValueError, TypeError, NameError):
+                print("Type Error")
 
-class DeleteReport:
-    pass
+        while True:
+
+            new_report_choice = input("Enter the action (P:print current report/D:delete current report/"
+                                      "E:exit to the main menu):")
+
+            if new_report_choice == 'P':  # Print report on printer
+                os.startfile(open_file_list[report_files_choice] + '.txt', "print")
+
+            elif new_report_choice == 'D':  # Delete report file
+                os.remove(open_file_list[report_files_choice] + '.txt')
+                f.close()
+
+                # Delete file from file list (open_file_list())
+                f = open('ini.txt', "r")
+                tmp_str = f.read()
+                f.close()
+                open_file_list = tmp_str.split(sep=',')
+                open_file_list.pop()  # delete last empty element
+                open_file_list.pop(report_files_choice)
+
+                # Write new file list
+                new_ini_str = ''
+                for elem in open_file_list:
+                    new_ini_str += elem + ','
+                f = open('ini.txt', "w")
+                f.write(new_ini_str)
+                f.close()
+                start.menu()
+
+            elif new_report_choice == 'E':  # Exit to the main menu
+                start.menu()
+
+            else:
+                print("Error, invalid value")
 
 
 class Notebook:
@@ -93,23 +153,15 @@ class Notebook:
     def chars_line(sign, len_of_line):
         print(f"{sign}" * len_of_line)
 
-    def show_report(self):
-        pass
-
     @staticmethod
     def create_new_report():
-        report = NewReport('report', '')
+        Notebook.chars_line('-', 80)
+        report = NewReport('report')
 
     @staticmethod
     def open_report():
+        Notebook.chars_line('-', 80)
         report = OpenReport('self')
-
-
-    def delete_report(self):
-        pass
-
-    def print_report(self):
-        pass
 
     def menu(self):
         while True:
@@ -118,8 +170,8 @@ class Notebook:
                             MENU
                 1.  CREATE NEW REPORT
                 2.  OPEN REPORT
-                3.  PRINT REPORT
-                4.  DELETE REPORT
+                    PRINT REPORT
+                    DELETE REPORT
                 0.  EXIT PROGRAM
             """)
             self.chars_line('-', 80)
@@ -129,10 +181,6 @@ class Notebook:
                 self.create_new_report()
             elif m_choice == "2":
                 self.open_report()
-            elif m_choice == "3":
-                self.print_report()
-            elif m_choice == "4":
-                self.delete_report()
             elif m_choice == "0":
                 exit('Good Bye')
             else:
