@@ -1,7 +1,7 @@
 import os
 
 """
-        Create and deletes reports, print from him.
+        Created and deletes reports from shopping plan, print from him.
 """
 
 
