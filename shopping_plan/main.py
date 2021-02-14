@@ -30,15 +30,6 @@ class NewReport:
             f = open("ini.txt", "w")
             self.report_quantity = list()
 
-            #
-            # f.write("Now the file has more content!")
-            # f.close()
-            # f = open("myfile.txt", "x")
-            # # open and read the file after the appending:
-            # f = open("demofile2.txt", "r")
-            # print(f.read())
-
-
     def enter_new_line(self):
         text = input(">write some text>")
         self.report_text.append(""+text+"\n")
@@ -61,26 +52,35 @@ class NewReport:
 
                 f = open('ini.txt', "a")
                 f.write(self.name + ",")
-                # print(f.read())
                 f.close()
-
-
-
                 start.menu()
+
             elif new_report_choice == 'E':
                 start.menu()
+
             else:
                 print("Error, invalid value")
 
 
-
-
-
-
-
-
 class OpenReport:
-    pass
+    def __init__(self, ol):
+        self.open_file_list = ol
+        open_file_list = list()
+
+        f = open('ini.txt', "r")
+        tmp_str = f.read()
+        print(tmp_str)
+        open_file_list = tmp_str.split(sep=',')
+        open_file_list.pop()  # delete last empty element
+
+        # Show all reports files
+        print("\n\t\tAll reports files(choose number to open):")
+        for idx, file in enumerate(open_file_list):
+            print(idx, "\t File:" + file)
+
+        report_files_choice = input('>')
+
+
 
 
 class DeleteReport:
@@ -89,7 +89,6 @@ class DeleteReport:
 
 class Notebook:
 
-    folder_path = '/'
     @staticmethod
     def chars_line(sign, len_of_line):
         print(f"{sign}" * len_of_line)
@@ -101,10 +100,10 @@ class Notebook:
     def create_new_report():
         report = NewReport('report', '')
 
+    @staticmethod
+    def open_report():
+        report = OpenReport('self')
 
-    def open_report(self):
-        f = open("serg.txt", "r")
-        print(f.read())
 
     def delete_report(self):
         pass
