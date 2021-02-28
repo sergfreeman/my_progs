@@ -1,10 +1,9 @@
-
-
 import random
+import import_export
 
 
-class Account:
-    def __init__(self, my_name, my_account_number, my_account_password, my_account_coins):
+class Account(import_export.ImportExport):
+    def __init__(self, my_name, my_account_number, my_account_password, my_account_coins, my_time):
 
         """
             Initial four class Account params
@@ -16,6 +15,7 @@ class Account:
                     Unique password
                 __account_coins  (type: Integer)
                     Balance
+                __time_deal (type: Integer)
         """
         self.__name = my_name
         self.__IBAN = my_account_number
@@ -23,15 +23,20 @@ class Account:
 
         self.__account_coins = my_account_coins
         self.__account_coins = 100
+        self.__time_deal = my_time
+
+
 
     WELCOME = 'Welcome to the "BANKA" Bank!'
+    client_acc_list = list()
+
 
     def create_name_new_account(self):
 
         """
             __name (type: String)
-                Create name for new account from two parts (first name and last name).
-                Both parts must have more than two and less than 50 alphabet sign.
+                Create name for new account from two parts (first name and last name).\n
+                Both parts must have more than two and less than 50 alphabet sign.\n
                 This name used by client logs.
 
         """
@@ -96,14 +101,14 @@ class Account:
         """
         while True:
 
-            print('SET YOUR PASSWORD\t', end=' ')
+            print('SET YOUR PASSWORD\t', end='')
             self.__account_password = self.enter_password()
-            print('CONFIRM YOUR PASSWORD\t')
+            print('CONFIRM YOUR PASSWORD\t', end='')
             confirm_password = self.enter_password()
 
             if self.__account_password == confirm_password:
 
-                print('PASSWORD IS CONFIRMED\n')
+                print('PASSWORD IS CONFIRMED\t')
                 self.char_line('-', 65)
                 print(f'''
  Well done. You are our new Client! {self.WELCOME}
@@ -123,6 +128,7 @@ class Account:
                           IBAN: {self.__IBAN}
                       password: {self.__account_password}
                          coins: {self.__account_coins}
+                  time of deal: {self.__time_deal}
         """
 
 
@@ -132,7 +138,7 @@ class Account:
 
         while True:
             try:
-                tmp_password = input('Enter account password (10 literals, special signs or digits without space):')
+                tmp_password = input('(ten letters, special characters or numbers without a space):')
                 if len(tmp_password) == 1:
                     if not tmp_password.find(' '):
                         print("Error, password couldn't contain white space.")
@@ -167,19 +173,65 @@ class Account:
         """Drawing symbol line"""
         print(f'{symbol}' * quantity)
 
+    def receive_coins(self, val):
+        """
+            (type: String)
+                Receive coins from account balance\n
+                Call method-setter: client_balance
+        """
+        self.char_line('-', 65)
+        try:
+            val = int(val)
+            if val <= self.client_balance:
+                self.client_balance -= val
+                print(f'Confirmed: you receive {val}')
+            else:
+                print("Canceled: you got no money.")
 
-def start_create_ac():
-    """
-    Create new account launcher.\n
-    Show main params.
-    """
-    person = Account('', None, None, None)
-    person.create_name_new_account()
-    person.create_new_iban()
-    person.create_new_password()
-    person.client_balance = 1
+            print(f"Balance: {self.client_balance} coins")
+            self.char_line('-', 65)
+        except (TypeError, ValueError):
+            print("Error, value should be integer")
 
-    print(person)
-    Account.char_line('-', 65)
+    def put_coins_in_account(self, val):
+        """
+            (type: String)
+                Put coins on account balance\n
+                Call method-setter: client_balance
+        """
+        self.char_line('-', 65)
+        try:
+            val = int(val)
+            if val > 0:
+                self.client_balance += val
+                print(f'Confirmed: you put {val} coins on your balance')
+            else:
+                print("Canceled: impossible operation.")
+            print(f"Balance: {self.client_balance} coins")
+            self.char_line('-', 65)
+        except (TypeError, ValueError):
+            print("Error, value should be integer")
+
+    @staticmethod
+    def pass_valid(valid_password):
+        print("Please, enter your password", end='')
+        enter_password = input()
+        if valid_password == enter_password:
+            return True
+        else:
+            return False
+
+    @staticmethod
+    def input_ac():
+        tmp_iban = 'UA' + input('Enter your personal account (27 symbol): UA')
+        if len(tmp_iban) == 29:
+            return tmp_iban
+        else:
+            if len(tmp_iban) > 29:
+                text = 'much'
+            else:
+                text = 'less'
+            print(f'Invalid value of IBAN length, too{text} symbols')
+
 
 

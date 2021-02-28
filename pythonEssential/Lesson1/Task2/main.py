@@ -2,16 +2,16 @@ from datetime import datetime
 
 class Reviews:
     """
-    This class create a reviews list
-    b - name of the book
-    t - text of review
-    d - name of defendant
-
-    review_list_text - list archive of reviews
-
-    static methods:
-    date_is       - get current date and time
-    set_defendant - set current defendant name
+    This class create a reviews list\n
+    b - name of the book\n
+    t - text of review\n
+    d - name of defendant\n
+\n
+    review_list_text - list archive of reviews\n
+\n
+    static methods:\n
+    date_is       - get current date and time\n
+    set_defendant - set current defendant name\n
     """
 
     def __init__(self, d=None, t=None, b='Alphabet'):
