@@ -148,3 +148,5 @@ class ImportExport:
 
 # ImportExport.list_db_create()
 # ImportExport.list_db_open()
+
+c = ImportExport()

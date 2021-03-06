@@ -1,7 +1,7 @@
 import io
-# from banka import
-from banka import account
-from banka import import_export
+
+from banca_bank.account import Account
+from banca_bank.ac_in_out import dictionary_of_visualisation
 
 
 # import receiving_money
@@ -21,31 +21,18 @@ def client_menu():
 
     """
     while True:
-        print('''
-            **********************************
-            *       Select an operation      *
-            **********************************
-            *                                *
-            *    1.  Put coins               * 
-            *    2.  Get coins               *
-            *    3.  Check balance           * 
-            *    4.  Close account           *
-            *                                *
-            *    0.  Exit to the main menu   *
-            *                                *
-            **********************************
-            ''')
-
+        print(dictionary_of_visualisation['M_CLIENT'])
         menu_choice = input("Select number of operation: ")
 
         if menu_choice == '1':
             # Create new account
-
-            person = account.Account('', None, None, None, None)
-
-            person.create_name_new_account()
-            person.create_new_iban()
-            person.create_new_password()
+            person = Account(Account.create_iban(), '', None, None, None)
+            # person.(f'{Account.create_iban('0')}', {Account.create_name()},
+            #                  {Account.create_password()}, {0}, {0})
+            #
+            # Account.create_name()
+            # person.create_iban()
+            # person.create_password()
             person.client_balance = 133
             print(person)
             person.char_line('-', 65)
@@ -69,37 +56,21 @@ def main_menu():
 
     """
     while True:
-        print('''
-            **********************************
-            *   Welcome to the "BANKA" bank  *
-            **********************************
-            *                                *
-            *    1.  Create a new account    * 
-            *    2.  Open a valid account    *
-            *                                *
-            *    0.  Exit                    *
-            *                                *
-            **********************************
-            ''')
-
+        print(dictionary_of_visualisation['MENU_MAIN'])
         menu_choice = input("Select number of operation: ")
 
         if menu_choice == '1':
             # Create new account
 
-            person = account.Account('', None, None, None, None)
-
-            person.create_name_new_account()
-            person.create_new_iban()
-            person.create_new_password()
-            person.client_balance = 133
+            person = Account(Account.create_iban(), Account.create_name(), Account.create_password(), 0, 0)
             print(person)
             person.char_line('-', 65)
 
         elif menu_choice == '2':
-            person = account.Account('', None, None, None, None)
-            person.client_acc_list = import_export.ImportExport.list_db_open()
-            print(person.client_acc_list)
+            # person = account.Account('', None, None, None, None)
+            # person.client_acc_list = import_export.ImportExport.list_db_open()
+            # print(person.client_acc_list)
+            print()
 
         elif menu_choice == '0':
             exit()
@@ -132,9 +103,9 @@ main_menu()
 #
 #             person = account.Account('', None, None, None, None)
 #
-#             person.create_name_new_account()
-#             person.create_new_iban()
-#             person.create_new_password()
+#             person.create_name()
+#             person.create_iban()
+#             person.create_password()
 #             person.client_balance = 133
 #             print(person)
 #             person.char_line('-', 65)

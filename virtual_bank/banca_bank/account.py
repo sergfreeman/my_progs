@@ -1,11 +1,11 @@
 import random
-import import_export
 
 
-class Account(import_export.ImportExport):
+class Account:
     def __init__(
-            self, my_name,
+            self,
             my_account_number,
+            my_name,
             my_account_password,
             my_account_coins,
             my_time):
@@ -36,7 +36,8 @@ class Account(import_export.ImportExport):
     client_acc_list = list()
 
 
-    def create_name_new_account(self):
+    @classmethod
+    def create_name(cls):
 
         """
             __name (type: String)
@@ -46,30 +47,37 @@ class Account(import_export.ImportExport):
 
         """
         print("\n\tCREATE NEW ACCOUNT")
+        name = ''
+        tmp_name = ''
 
         for part_of_name in ('first_name', 'last_name'):
-
             if part_of_name == 'first_name':
-                tmp_name = 'First name'
+                part_name = 'First name'
             else:
-                tmp_name = 'Last name'
+                part_name = 'Last name'
 
             while True:
                 try:
-
-                    print(f'{tmp_name} name is:', end='')
+                    print(f'{part_name} name is:', end='')
                     tmp_name = input()
+
                     if tmp_name != " " and len(tmp_name) in range(2, 50):
+
                         if tmp_name.isalpha():
-                            if self.__name != '':
-                                self.__name += ' '
-                            self.__name = self.__name + tmp_name
-                            break
+                            name += tmp_name
+                            if part_name == 'Last name':
+                                return name
+                            else:
+                                name = tmp_name.__add__(' ')
+                                break
+
                         else:
                             print('Name must have only literals, pleas try again!')
+
                     else:
                         print('Name must have more than two literal, pleas try again!')
                         continue
+
                 except ValueError:
                     print('Error value')
                     continue
@@ -84,7 +92,8 @@ class Account(import_export.ImportExport):
         """(type: String) Generate random number from 0 to 9"""
         return random.randint(0, 10)
 
-    def create_new_iban(self):
+    @classmethod
+    def create_iban(cls):
         """ Create new unique account value IBAN (International Bank Account Number)
             https://uk.wikipedia.org/wiki/International_Bank_Account_Number
         """
@@ -96,9 +105,11 @@ class Account(import_export.ImportExport):
         for digit in range(13):
             account_number += str(Account.generate_number())
 
-        self.__IBAN = f'{country_cod}{control_alpha}{bank_code}{five_zero}{account_number}'
+        cls.__IBAN = f'{country_cod}{control_alpha}{bank_code}{five_zero}{account_number}'
+        return cls.__IBAN
 
-    def create_new_password(self):
+    @classmethod
+    def create_password(cls):
         """
             __account_password (type: String)\n
             Create and confirm a new account password.\n
@@ -107,21 +118,22 @@ class Account(import_export.ImportExport):
         while True:
 
             print('SET YOUR PASSWORD\t', end='')
-            self.__account_password = self.enter_password()
+            cls.__account_password = cls.enter_password()
             print('CONFIRM YOUR PASSWORD\t', end='')
-            confirm_password = self.enter_password()
+            confirm_password = cls.enter_password()
 
-            if self.__account_password == confirm_password:
+            if cls.__account_password == confirm_password:
 
                 print('PASSWORD IS CONFIRMED\t')
-                self.char_line('-', 65)
+                cls.char_line('-', 65)
                 print(f'''
- Well done. You are our new Client! {self.WELCOME}
+ Well done. You are our new Client! {cls.WELCOME}
                 ''')
-                self.char_line('-', 65)
-                break
+                cls.char_line('-', 65)
+                return confirm_password
             else:
                 print('PASSWORD COULD NOT CONFIRMED, TRY AGAIN.')
+            return confirm_password, cls
 
     def __repr__(self):
         """Create representation of main object values"""
