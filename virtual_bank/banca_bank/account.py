@@ -1,4 +1,3 @@
-import sqlite3
 from acc_utilities import Utilities
 import txt_dict
 
@@ -108,14 +107,14 @@ class Account(Utilities):
     def __repr__(self):
         """Create representation of main object values"""
         return f"""
-        Private Client 
-        information:
-        
-                        Client: {self.__name}
-                          IBAN: {self.__IBAN}
-                      password: {self.__account_password}
-                         coins: {self.__account_coins}
-                  time of deal: {self.__time_deal}
+        |-----------------------------------------|     
+        |        Private Client information       |
+        |-----------------------------------------|
+            Client: {self.__name}
+              IBAN: {self.__IBAN}                
+          password: {self.__account_password}    
+             coins: {self.__account_coins}       
+        |-----------------------------------------|
         """
 
     @property
@@ -166,7 +165,6 @@ class Account(Utilities):
             val = int(val)
             if val > 0:
                 self.client_balance += val
-
                 print(f'Confirmed: you put {val} coins on your balance')
             else:
                 print("Canceled: impossible operation.")
@@ -199,48 +197,26 @@ class Account(Utilities):
     def val_return(self):
         iban = str(self.__IBAN)
         name = str(self.__name)
-        password = str(self.__account_password)
+        password = int(self.__account_password)
         coins = int(self.__account_coins)
         time = int(self.__time_deal)
         user = (iban, name, password, coins, time)
         return user
 
-    def save_to_db(self):
-        conn = sqlite3.connect('banca.db')
-        cur = conn.cursor()
-        cur.execute(f"DELETE FROM users WHERE iban ='{self.__IBAN}';")
-        conn.commit()
-        user = self.val_return()
-        cur.execute("INSERT INTO users VALUES(?, ?, ?, ?, ?);", user)
-        conn.commit()
-
-    @staticmethod
-    def load_from_db():
-        conn = sqlite3.connect('banca.db')
-        cur = conn.cursor()
-
-        Account.char_line('-', 65)
-        choice = input('Enter the IBAN of the person you want to open: ')
-        choice = 'UAUA390465000004789779135255'
-        cur.execute(f"SELECT * FROM users WHERE iban = '{choice}';")
-        one_result = cur.fetchone()
-
-        return one_result
-
-
     def close_acc(self):
         self.char_line('-', 65)
         print(txt_dict.dictionary_of_visualisation.get('CLOSE'))
         while True:
-            choice = input('Y/N: ')
+            choice = input(f"""\t\t\tY/N: """)
             if choice == 'Y' or choice == 'y':
-                print(f'\n\tYou get {self.__account_coins} coins.')
                 self.char_line('-', 65)
-                return
+                print(f'You get {self.__account_coins} coins.')
+                print(f'CLOSE ACCOUNT ({self.__IBAN}): DONE.')
+                return 'YES'
 
             elif choice == 'N' or choice == 'n':
                 self.char_line('-', 65)
-                continue
+                return 'NO'
             else:
                 print(txt_dict.dictionary_of_visualisation.get('CHOICE'))
 

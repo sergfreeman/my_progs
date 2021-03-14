@@ -33,7 +33,7 @@ dictionary_of_visualisation = {
     'WELCOME': 'Welcome to the "BANCA" Bank!',
     'CLOSE':
     """
-                     Attention! 
+                       Attention! 
             This operation can't to reverse!
 Do you really want to close your account and receive money?
     """,

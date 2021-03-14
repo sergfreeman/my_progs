@@ -41,7 +41,7 @@ class MySqlUtilities:
             print(e)
 
     @staticmethod
-    def show_from_iban(iban):
+    def params_from_iban(iban):
         """
         :param iban: KEY
         :return: VALUES of person with KEY-iban
@@ -50,9 +50,7 @@ class MySqlUtilities:
             connection = MySqlUtilities.create_connection(MySqlUtilities.SITE, MySqlUtilities.BASE, MySqlUtilities.PASS)
             cursor = connection.cursor()
             cursor.execute(f"SELECT * FROM sergfreeman.banca WHERE iban='{iban}'")
-
             answer = cursor.fetchall()
-            print(answer)
             cursor.close()
             connection.close()
             return answer
@@ -96,7 +94,6 @@ class MySqlUtilities:
         cursor.execute(f'{using}')
         pers_data = iban, name, password, coins, time
         cursor.close()
-        print(pers_data)
         return pers_data
 
     @staticmethod
@@ -109,13 +106,14 @@ class MySqlUtilities:
             cursor.execute(f"DELETE FROM sergfreeman.banca WHERE iban='{iban}';")
             cursor.close()
             connection.close()
+
         except Error as e:
             print(e)
 
     @staticmethod
     def is_unique_iban(iban):
         """
-        check for uniqueal iban
+        check for unequal iban
         :param iban:(str)
         :return: True or False
         """

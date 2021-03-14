@@ -19,7 +19,7 @@ class Utilities:
 
     @staticmethod
     def pass_valid(valid_password):
-        print("Please, enter your password", end='')
+        print("Please, enter your password: ", end='')
         enter_password = input()
         if valid_password == enter_password:
             return True
