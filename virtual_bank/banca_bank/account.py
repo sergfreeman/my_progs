@@ -1,7 +1,9 @@
-import random
+import sqlite3
+from acc_utilities import Utilities
+import txt_dict
 
 
-class Account:
+class Account(Utilities):
     def __init__(
             self,
             my_account_number,
@@ -9,7 +11,6 @@ class Account:
             my_account_password,
             my_account_coins,
             my_time):
-
         """
             Initial four class Account params
                 __name (type: String)
@@ -17,7 +18,7 @@ class Account:
                 __IBAN (type: String)
                     Unique account number
                 __account_password (type: String)
-                    Unique password
+                    Password
                 __account_coins  (type: Integer)
                     Balance
                 __time_deal (type: Integer)
@@ -25,20 +26,11 @@ class Account:
         self.__name = my_name
         self.__IBAN = my_account_number
         self.__account_password = my_account_password
-
         self.__account_coins = my_account_coins
-        self.__account_coins = 100
         self.__time_deal = my_time
-
-
-
-    WELCOME = 'Welcome to the "BANKA" Bank!'
-    client_acc_list = list()
-
 
     @classmethod
     def create_name(cls):
-
         """
             __name (type: String)
                 Create name for new account from two parts (first name and last name).\n
@@ -48,21 +40,17 @@ class Account:
         """
         print("\n\tCREATE NEW ACCOUNT")
         name = ''
-        tmp_name = ''
 
         for part_of_name in ('first_name', 'last_name'):
             if part_of_name == 'first_name':
                 part_name = 'First name'
             else:
                 part_name = 'Last name'
-
             while True:
                 try:
                     print(f'{part_name} name is:', end='')
                     tmp_name = input()
-
                     if tmp_name != " " and len(tmp_name) in range(2, 50):
-
                         if tmp_name.isalpha():
                             name += tmp_name
                             if part_name == 'Last name':
@@ -70,27 +58,14 @@ class Account:
                             else:
                                 name = tmp_name.__add__(' ')
                                 break
-
                         else:
                             print('Name must have only literals, pleas try again!')
-
                     else:
                         print('Name must have more than two literal, pleas try again!')
                         continue
-
                 except ValueError:
                     print('Error value')
                     continue
-
-    @staticmethod
-    def generate_alpha():
-        """(type: String) Generate random upper case literal from A to Z"""
-        return chr(random.randint(65, 91))
-
-    @staticmethod
-    def generate_number():
-        """(type: String) Generate random number from 0 to 9"""
-        return random.randint(0, 10)
 
     @classmethod
     def create_iban(cls):
@@ -104,7 +79,6 @@ class Account:
         account_number = ''
         for digit in range(13):
             account_number += str(Account.generate_number())
-
         cls.__IBAN = f'{country_cod}{control_alpha}{bank_code}{five_zero}{account_number}'
         return cls.__IBAN
 
@@ -116,24 +90,20 @@ class Account:
             Contains ten letters, special characters or numbers without a space.
         """
         while True:
-
             print('SET YOUR PASSWORD\t', end='')
             cls.__account_password = cls.enter_password()
             print('CONFIRM YOUR PASSWORD\t', end='')
             confirm_password = cls.enter_password()
-
             if cls.__account_password == confirm_password:
-
                 print('PASSWORD IS CONFIRMED\t')
                 cls.char_line('-', 65)
                 print(f'''
- Well done. You are our new Client! {cls.WELCOME}
+ Well done. You are our new Client! {txt_dict.dictionary_of_visualisation.get('WELCOME')}
                 ''')
                 cls.char_line('-', 65)
                 return confirm_password
             else:
                 print('PASSWORD COULD NOT CONFIRMED, TRY AGAIN.')
-            return confirm_password, cls
 
     def __repr__(self):
         """Create representation of main object values"""
@@ -147,26 +117,6 @@ class Account:
                          coins: {self.__account_coins}
                   time of deal: {self.__time_deal}
         """
-
-
-    @staticmethod
-    def enter_password():
-        """Input password method"""
-
-        while True:
-            try:
-                tmp_password = input('(ten letters, special characters or numbers without a space):')
-                if len(tmp_password) == 1:
-                    if not tmp_password.find(' '):
-                        print("Error, password couldn't contain white space.")
-                        continue
-                    else:
-                        break
-                else:
-                    print('Error, password length should be ten symbol.')
-            except ValueError:
-                print("Type error")
-        return tmp_password
 
     @property
     def client_balance(self):
@@ -183,12 +133,6 @@ class Account:
         Account.char_line('-', 65)
         print(self)
         Account.char_line('-', 65)
-
-
-    @staticmethod
-    def char_line(symbol, quantity):
-        """Drawing symbol line"""
-        print(f'{symbol}' * quantity)
 
     def receive_coins(self, val):
         """
@@ -209,6 +153,7 @@ class Account:
             self.char_line('-', 65)
         except (TypeError, ValueError):
             print("Error, value should be integer")
+            self.char_line('-', 65)
 
     def put_coins_in_account(self, val):
         """
@@ -221,6 +166,7 @@ class Account:
             val = int(val)
             if val > 0:
                 self.client_balance += val
+
                 print(f'Confirmed: you put {val} coins on your balance')
             else:
                 print("Canceled: impossible operation.")
@@ -228,27 +174,73 @@ class Account:
             self.char_line('-', 65)
         except (TypeError, ValueError):
             print("Error, value should be integer")
+            self.char_line('-', 65)
 
-    @staticmethod
-    def pass_valid(valid_password):
-        print("Please, enter your password", end='')
-        enter_password = input()
-        if valid_password == enter_password:
-            return True
-        else:
-            return False
-
-    @staticmethod
-    def input_ac():
-        tmp_iban = 'UA' + input('Enter your personal account (27 symbol): UA')
-        if len(tmp_iban) == 29:
-            return tmp_iban
-        else:
-            if len(tmp_iban) > 29:
-                text = 'much'
+    def get_coins_in_account(self, val):
+        """
+            (type: String)
+                Get coins on account balance\n
+                Call method-setter: client_balance
+        """
+        self.char_line('-', 65)
+        try:
+            val = int(val)
+            if self.client_balance >= val > 0:
+                self.client_balance -= val
+                print(f'Confirmed: you get {val} coins from your balance')
             else:
-                text = 'less'
-            print(f'Invalid value of IBAN length, too{text} symbols')
+                print("Canceled: impossible operation.")
+            print(f"Balance: {self.client_balance} coins")
+            self.char_line('-', 65)
+        except (ValueError, TypeError, ):
+            print("Error, value should be integer")
+            self.char_line('-', 65)
+
+    def val_return(self):
+        iban = str(self.__IBAN)
+        name = str(self.__name)
+        password = str(self.__account_password)
+        coins = int(self.__account_coins)
+        time = int(self.__time_deal)
+        user = (iban, name, password, coins, time)
+        return user
+
+    def save_to_db(self):
+        conn = sqlite3.connect('banca.db')
+        cur = conn.cursor()
+        cur.execute(f"DELETE FROM users WHERE iban ='{self.__IBAN}';")
+        conn.commit()
+        user = self.val_return()
+        cur.execute("INSERT INTO users VALUES(?, ?, ?, ?, ?);", user)
+        conn.commit()
+
+    @staticmethod
+    def load_from_db():
+        conn = sqlite3.connect('banca.db')
+        cur = conn.cursor()
+
+        Account.char_line('-', 65)
+        choice = input('Enter the IBAN of the person you want to open: ')
+        choice = 'UAUA390465000004789779135255'
+        cur.execute(f"SELECT * FROM users WHERE iban = '{choice}';")
+        one_result = cur.fetchone()
+
+        return one_result
 
 
+    def close_acc(self):
+        self.char_line('-', 65)
+        print(txt_dict.dictionary_of_visualisation.get('CLOSE'))
+        while True:
+            choice = input('Y/N: ')
+            if choice == 'Y' or choice == 'y':
+                print(f'\n\tYou get {self.__account_coins} coins.')
+                self.char_line('-', 65)
+                return
+
+            elif choice == 'N' or choice == 'n':
+                self.char_line('-', 65)
+                continue
+            else:
+                print(txt_dict.dictionary_of_visualisation.get('CHOICE'))
 

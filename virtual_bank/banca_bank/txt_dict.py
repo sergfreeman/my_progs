@@ -1,4 +1,4 @@
-tmp = 5
+# tmp = 5
 dictionary_of_visualisation = {
     'MENU_CLIENT':
     """
@@ -8,9 +8,10 @@ dictionary_of_visualisation = {
             *                                *
             *    1.  Put coins               * 
             *    2.  Get coins               *
-            *    3.  Check balance           * 
+            *    3.  View profile            * 
             *    4.  Close account           *
             *                                *
+            *    9.  Settings                *
             *    0.  Exit to the main menu   *
             *                                *
             **********************************
@@ -28,5 +29,15 @@ dictionary_of_visualisation = {
             *    0.  Exit                    *
             *                                *
             **********************************
-"""}
-# print(dictionary_of_visualisation['MENU_MAIN'], dictionary_of_visualisation['MENU_CLIENT'])
+""",
+    'WELCOME': 'Welcome to the "BANCA" Bank!',
+    'CLOSE':
+    """
+                     Attention! 
+            This operation can't to reverse!
+Do you really want to close your account and receive money?
+    """,
+    'CHOICE': 'Please, make your choice!'
+
+
+}
