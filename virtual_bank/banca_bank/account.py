@@ -9,7 +9,9 @@ class Account(Utilities):
             my_name,
             my_account_password,
             my_account_coins,
-            my_time):
+            my_time,
+            my_mail
+                ):
         """
             Initial four class Account params
                 __name (type: String)
@@ -27,6 +29,7 @@ class Account(Utilities):
         self.__account_password = my_account_password
         self.__account_coins = my_account_coins
         self.__time_deal = my_time
+        self.__mail = my_mail
 
     @classmethod
     def create_name(cls):
@@ -37,7 +40,8 @@ class Account(Utilities):
                 This name used by client logs.
 
         """
-        print("\n\tCREATE NEW ACCOUNT")
+        Account.char_line('-', 65)
+        print("CREATE NEW ACCOUNT")
         name = ''
 
         for part_of_name in ('first_name', 'last_name'):
@@ -76,8 +80,10 @@ class Account(Utilities):
         bank_code = '390465'
         five_zero = '00000'
         account_number = ''
-        for digit in range(13):
-            account_number += str(Account.generate_number())
+        # for digit in range(13):
+        while len(account_number) < 14:
+            # account_number += str(Account.generate_number())
+            account_number = f'{account_number}{(str(Account.generate_number()))}'
         cls.__IBAN = f'{country_cod}{control_alpha}{bank_code}{five_zero}{account_number}'
         return cls.__IBAN
 
@@ -86,23 +92,46 @@ class Account(Utilities):
         """
             __account_password (type: String)\n
             Create and confirm a new account password.\n
-            Contains ten letters, special characters or numbers without a space.
+            Contains ten numbers without a space.
         """
         while True:
-            print('SET YOUR PASSWORD\t', end='')
+            Account.char_line('-', 65)
+            print('SET YOUR PASSWORD')
             cls.__account_password = cls.enter_password()
-            print('CONFIRM YOUR PASSWORD\t', end='')
+            print('CONFIRM YOUR PASSWORD')
             confirm_password = cls.enter_password()
             if cls.__account_password == confirm_password:
-                print('PASSWORD IS CONFIRMED\t')
-                cls.char_line('-', 65)
-                print(f'''
- Well done. You are our new Client! {txt_dict.dictionary_of_visualisation.get('WELCOME')}
-                ''')
-                cls.char_line('-', 65)
+ #                cls.char_line('-', 65)
+ #                print(f'''
+ # Well done. You are our new Client! {txt_dict.dictionary_of_visualisation.get('WELCOME')}
+ #                ''')
                 return confirm_password
             else:
                 print('PASSWORD COULD NOT CONFIRMED, TRY AGAIN.')
+
+    @staticmethod
+    def create_email():
+        """Input email method"""
+        while True:
+            try:
+                Account.char_line('-', 65)
+                print('SET YOUR EMAIL')
+                tmp_mail = input('(contact e-mail for remember your password):')
+                if len(tmp_mail) < 320:
+                    if tmp_mail.find(' '):
+                        break
+                    else:
+                        print("Error, email couldn't contain white space.")
+                        continue
+                else:
+                    print('Error, email length should be less then 320 symbols.')
+            except ValueError:
+                print("Type error")
+        Account.char_line('-', 65)
+        print(f'''
+ Well done. You are our new Client! {txt_dict.dictionary_of_visualisation.get('WELCOME')}
+                ''')
+        return tmp_mail
 
     def __repr__(self):
         """Create representation of main object values"""
@@ -113,7 +142,8 @@ class Account(Utilities):
             Client: {self.__name}
               IBAN: {self.__IBAN}                
           password: {self.__account_password}    
-             coins: {self.__account_coins}       
+             coins: {self.__account_coins} 
+            e-mail: {self.__mail}       
         |-----------------------------------------|
         """
 
@@ -200,7 +230,8 @@ class Account(Utilities):
         password = int(self.__account_password)
         coins = int(self.__account_coins)
         time = int(self.__time_deal)
-        user = (iban, name, password, coins, time)
+        mail = str(self.__mail)
+        user = (iban, name, password, coins, time, mail)
         return user
 
     def close_acc(self):
@@ -219,4 +250,3 @@ class Account(Utilities):
                 return 'NO'
             else:
                 print(txt_dict.dictionary_of_visualisation.get('CHOICE'))
-

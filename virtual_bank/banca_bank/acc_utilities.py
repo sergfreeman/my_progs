@@ -44,7 +44,7 @@ class Utilities:
         while True:
             try:
                 tmp_password = input('(ten numbers without a space):')
-                if len(tmp_password) == 1:
+                if len(tmp_password) == 10:
                     if tmp_password.find(' ') and tmp_password.isdigit():
                         break
                     else:

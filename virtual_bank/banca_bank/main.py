@@ -1,5 +1,5 @@
 from banca_bank.account import Account
-from banca_bank.mysql_utilities import MySqlUtilities
+from banca_bank.mysql_utilities import MySqlUtil
 from banca_bank.txt_dict import dictionary_of_visualisation
 
 
@@ -14,7 +14,7 @@ def client_menu(param):
                          0   exit to the main menu\n
 
     """
-    person = Account(param[0], param[1], (param[2]), (param[3]), (param[4]))
+    person = Account(param[0], param[1], int(param[2]), int(param[3]), int(param[4]), (param[5]))
     while True:
         print(dictionary_of_visualisation['MENU_CLIENT'])
         menu_choice = input("Select number of operation: ")
@@ -23,13 +23,13 @@ def client_menu(param):
             person.char_line('-', 65)
             money = input('PUT coins: ')
             person.put_coins_in_account(money)
-            MySqlUtilities.update_person(param[0], param[1], (param[2]), int(person.client_balance), int(param[4]))
+            MySqlUtil.update_person(param[0], param[1], param[2], int(person.client_balance), param[4], param[5])
 
         elif menu_choice == '2':
             person.char_line('-', 65)
             money = input('GET coins: ')
             person.get_coins_in_account(money)
-            MySqlUtilities.update_person(param[0], param[1], (param[2]), int(person.client_balance), int(param[4]))
+            MySqlUtil.update_person(param[0], param[1], (param[2]), int(person.client_balance), param[4], param[5])
 
         elif menu_choice == '3':
             person.char_line('-', 65)
@@ -40,7 +40,7 @@ def client_menu(param):
             key = person.close_acc()
 
             if key == 'YES':
-                MySqlUtilities.del_person_acc(param[0])
+                MySqlUtil.del_person_acc(param[0])
             else:
                 continue
 
@@ -48,11 +48,11 @@ def client_menu(param):
 
         # Engineering function, hide realization, working only for debugging!
         elif menu_choice == '7':
-            MySqlUtilities.show_all()
+            MySqlUtil.show_all()
         # return to the MAIN menu
         elif menu_choice == '0':
-            person.char_line('-', 65)
-            exit()
+            # person.char_line('-', 65)
+            main_menu()
 
 
 def main_menu():
@@ -73,13 +73,14 @@ def main_menu():
         if menu_choice == '1':
             while True:
                 iban = Account.create_iban()
-                if MySqlUtilities.is_unique_iban(iban) is True:
+                if MySqlUtil.is_unique_iban(iban) is True:
                     break
 
-            param = iban, Account.create_name(), Account.create_password(), 0, 0
+            param = iban, Account.create_name(), Account.create_password(), 0, 0, Account.create_email()
 
             Account.char_line('-', 65)
-            MySqlUtilities.update_person(param[0], param[1], param[2], param[3], param[4])
+            MySqlUtil.update_person(param[0], param[1], param[2], param[3], param[4], param[5])
+            print('go cl par')
             client_menu(param)
 
         # Load valid account
@@ -91,7 +92,7 @@ def main_menu():
 you want to open: """)
 
                 Account.char_line('-', 65)
-                if MySqlUtilities.is_unique_iban(iban) is False:
+                if MySqlUtil.is_unique_iban(iban) is False:
                     break
                 else:
                     print("""
@@ -101,8 +102,8 @@ you want to open: """)
                     choice = input()
                     if choice == 'E' or choice == 'e':
                         main_menu()
-            param = (MySqlUtilities.params_from_iban(iban))
-            person = Account(param[0][0], param[0][1], param[0][2], param[0][3], param[0][4])
+            param = (MySqlUtil.params_from_iban(iban))
+            person = Account(param[0][0], param[0][1], param[0][2], param[0][3], param[0][4], param[0][5])
             attempt_counter = 3
             while attempt_counter >= 0:
                 key = person.pass_valid(str(param[0][2]))
@@ -120,11 +121,10 @@ you want to open: """)
                     attempt_counter -= 1
         # Engineering function, hide realization, working only for debugging!
         elif menu_choice == '3':
-            MySqlUtilities.show_all()
+            MySqlUtil.show_all()
         # Exit
         elif menu_choice == '0':
             exit()
 
 
 main_menu()
-

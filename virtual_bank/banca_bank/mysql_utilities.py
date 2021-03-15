@@ -2,7 +2,7 @@ import mysql.connector
 from mysql.connector import Error
 
 
-class MySqlUtilities:
+class MySqlUtil:
     SITE, BASE, PASS = 'zzz.com.ua', 'sergfreeman', 'mysqlSerg1980'
 
     @staticmethod
@@ -29,7 +29,7 @@ class MySqlUtilities:
         Show all account table
         """
         try:
-            connection = MySqlUtilities.create_connection(MySqlUtilities.SITE, MySqlUtilities.BASE, MySqlUtilities.PASS)
+            connection = MySqlUtil.create_connection(MySqlUtil.SITE, MySqlUtil.BASE, MySqlUtil.PASS)
             cursor = connection.cursor()
             cursor.execute("SELECT * FROM sergfreeman.banca")
             rows = cursor.fetchall()
@@ -47,7 +47,7 @@ class MySqlUtilities:
         :return: VALUES of person with KEY-iban
         """
         try:
-            connection = MySqlUtilities.create_connection(MySqlUtilities.SITE, MySqlUtilities.BASE, MySqlUtilities.PASS)
+            connection = MySqlUtil.create_connection(MySqlUtil.SITE, MySqlUtil.BASE, MySqlUtil.PASS)
             cursor = connection.cursor()
             cursor.execute(f"SELECT * FROM sergfreeman.banca WHERE iban='{iban}'")
             answer = cursor.fetchall()
@@ -58,7 +58,7 @@ class MySqlUtilities:
             print(e)
 
     @staticmethod
-    def update_person(iban, name, password, coins, time):
+    def update_person(iban, name, password, coins, time, mail):
         """
             get VALUES:
             iban,name ->(str)\n
@@ -66,7 +66,7 @@ class MySqlUtilities:
             \n if iban is valid, update person VALUES in data base from KEY iban\n
             else create new person with current parameters
         """
-        connection = MySqlUtilities.create_connection(MySqlUtilities.SITE, MySqlUtilities.BASE, MySqlUtilities.PASS)
+        connection = MySqlUtil.create_connection(MySqlUtil.SITE, MySqlUtil.BASE, MySqlUtil.PASS)
         cursor = connection.cursor()
 
         # check iban for availability
@@ -76,9 +76,9 @@ class MySqlUtilities:
         if len(is_valid) == 0:
             using = f"""
             INSERT INTO sergfreeman.banca 
-            (iban, name, password, coins, deal_time) 
+            (iban, name, password, coins, deal_time, mail) 
             VALUES 
-            ('{iban}','{name}','{password}','{coins}','{time}')
+            ('{iban}','{name}','{password}','{coins}','{time}', '{mail}')
             """
         else:
             using = f"""
@@ -87,12 +87,13 @@ class MySqlUtilities:
             name = '{name}',
             password = '{password}',
             coins = '{coins}',
-            deal_time = '{time}'
+            deal_time = '{time}',
+            mail = '{mail}'
             WHERE iban = '{iban}'
             """
 
         cursor.execute(f'{using}')
-        pers_data = iban, name, password, coins, time
+        pers_data = iban, name, password, coins, time, mail
         cursor.close()
         return pers_data
 
@@ -101,7 +102,7 @@ class MySqlUtilities:
         """get KEY iban(str):\n
             delete person with this iban"""
         try:
-            connection = MySqlUtilities.create_connection(MySqlUtilities.SITE, MySqlUtilities.BASE, MySqlUtilities.PASS)
+            connection = MySqlUtil.create_connection(MySqlUtil.SITE, MySqlUtil.BASE, MySqlUtil.PASS)
             cursor = connection.cursor()
             cursor.execute(f"DELETE FROM sergfreeman.banca WHERE iban='{iban}';")
             cursor.close()
@@ -117,13 +118,13 @@ class MySqlUtilities:
         :param iban:(str)
         :return: True or False
         """
-        connection = MySqlUtilities.create_connection(MySqlUtilities.SITE, MySqlUtilities.BASE, MySqlUtilities.PASS)
+        connection = MySqlUtil.create_connection(MySqlUtil.SITE, MySqlUtil.BASE, MySqlUtil.PASS)
         cursor = connection.cursor()
         cursor.execute(f"SELECT * FROM sergfreeman.banca WHERE iban='{iban}'")
-        if len(cursor.fetchall()) == 0:
+        tmp = len(cursor.fetchall())
+        cursor.close()
+        connection.close()
+        if tmp == 0:
             return True
         else:
             return False
-
-
-
