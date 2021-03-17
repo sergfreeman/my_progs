@@ -80,7 +80,7 @@ def main_menu():
 
             Account.char_line('-', 65)
             MySqlUtil.update_person(param[0], param[1], int(param[2]), param[3], param[4], param[5])
-            input(f'{param}')
+
             client_menu(param)
 
         # Load valid account
