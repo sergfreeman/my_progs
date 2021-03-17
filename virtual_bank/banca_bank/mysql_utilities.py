@@ -1,6 +1,8 @@
 import mysql.connector
 from mysql.connector import Error
-
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import smtplib
 
 class MySqlUtil:
     SITE, BASE, PASS = 'zzz.com.ua', 'sergfreeman', 'mysqlSerg1980'
@@ -128,3 +130,66 @@ class MySqlUtil:
             return True
         else:
             return False
+
+    # @staticmethod
+    # def mailer(mailbox, text):
+        # import smtplib  # Импортируем библиотеку по работе с SMTP
+
+        # Добавляем необходимые подклассы - MIME-типы
+        # from email.mime.multipart import MIMEMultipart  # Многокомпонентный объект
+        # from email.mime.text import MIMEText  # Текст/HTML
+        # from email.mime.image import MIMEImage  # Изображения
+
+        # addr_from = "banca.bank@meta.ua"  # Адресат
+        # addr_to = "sergandd@gmail.com"  # Получатель
+        # password = "banca.bank21"  # Пароль
+        #
+        # msg = MIMEMultipart()  # Создаем сообщение
+        # msg['From'] = addr_from  # Адресат
+        # msg['To'] = addr_to  # Получатель
+        # msg['Subject'] = 'Тема сообщения'  # Тема сообщения
+        #
+        # body = "Текст сообщения"
+        # msg.attach(MIMEText(body, 'plain'))  # Добавляем в сообщение текст
+        #
+        # server = smtplib.SMTP('smtp.meta.ua', 465)
+        #
+        # # server = smtplib.SMTP('smtp.ukr.net', 2525)  # Создаем объект SMTP
+        # # server.set_debuglevel(True)  # Включаем режим отладки - если отчет не нужен, строку можно закомментировать
+        # server.starttls()  # Начинаем шифрованный обмен по TLS
+        # server.login(addr_from, password)  # Получаем доступ
+        # server.send_message(msg)  # Отправляем сообщение
+        # server.quit()  # Выходим
+
+    # @staticmethod
+    # def mailer(mailbox, text):
+    #     # -*- coding: cp1251 -*-
+    #     import smtplib
+    #     # from email.MIMEText import MIMEText
+    #
+    #     # отправитель
+    #     me = 'banca.bank@meta.ua'
+    #     # получатель
+    #     you = mailbox
+    #     # текст письма
+    #     text = text
+    #     # заголовок письма
+    #     subj = 'Привет от Python'
+    #
+    #     # параметры SMTP-сервера
+    #     server = "smtp.meta.ua"  # "smtp.bk.ru"
+    #     port = 465
+    #     user_name = "banca.bank@meta.ua"
+    #     user_passwd = "banca.bank21"
+    #
+    #     msg = MIMEText(text, "", "cp1251")
+    #     msg['Subject'] = subj
+    #     msg['From'] = me
+    #     msg['To'] = you
+    #
+    #     s = smtplib.SMTP(server, port)
+    #     s.starttls()
+    #     s.login(user_name, user_passwd)
+    #     s.sendmail(me, you, msg.as_string())
+    #     s.quit()
+    #

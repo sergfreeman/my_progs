@@ -101,10 +101,6 @@ class Account(Utilities):
             print('CONFIRM YOUR PASSWORD')
             confirm_password = cls.enter_password()
             if cls.__account_password == confirm_password:
- #                cls.char_line('-', 65)
- #                print(f'''
- # Well done. You are our new Client! {txt_dict.dictionary_of_visualisation.get('WELCOME')}
- #                ''')
                 return confirm_password
             else:
                 print('PASSWORD COULD NOT CONFIRMED, TRY AGAIN.')
@@ -156,6 +152,11 @@ class Account(Utilities):
     def client_balance(self, val):
         """(type: Setter) Setter of client balance"""
         self.__account_coins = val
+
+    @property
+    def client_email(self):
+        """(type: String) Getter of client email"""
+        return self.__mail
 
     def show_person_info(self):
         """Show main account parameters"""

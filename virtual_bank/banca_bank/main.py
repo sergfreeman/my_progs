@@ -14,7 +14,7 @@ def client_menu(param):
                          0   exit to the main menu\n
 
     """
-    person = Account(param[0], param[1], int(param[2]), int(param[3]), int(param[4]), (param[5]))
+    person = Account(param[0], param[1], param[2], int(param[3]), int(param[4]), (param[5]))
     while True:
         print(dictionary_of_visualisation['MENU_CLIENT'])
         menu_choice = input("Select number of operation: ")
@@ -79,8 +79,8 @@ def main_menu():
             param = iban, Account.create_name(), Account.create_password(), 0, 0, Account.create_email()
 
             Account.char_line('-', 65)
-            MySqlUtil.update_person(param[0], param[1], param[2], param[3], param[4], param[5])
-            print('go cl par')
+            MySqlUtil.update_person(param[0], param[1], int(param[2]), param[3], param[4], param[5])
+            input(f'{param}')
             client_menu(param)
 
         # Load valid account
@@ -119,6 +119,9 @@ you want to open: """)
                     print(f'Left {attempt_counter} attempts.')
                     person.char_line('-', 65)
                     attempt_counter -= 1
+                    if attempt_counter == 0:
+                        pass
+                       # MySqlUtil.mailer(person.client_email, 'Test text')
         # Engineering function, hide realization, working only for debugging!
         elif menu_choice == '3':
             MySqlUtil.show_all()
