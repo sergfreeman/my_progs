@@ -11,7 +11,7 @@ dictionary_of_visualisation = {
             *    3.  View profile            * 
             *    4.  Close account           *
             *                                *
-            *    9.  Settings                *
+            *    9.  Information             *
             *    0.  Exit to the main menu   *
             *                                *
             **********************************

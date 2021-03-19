@@ -5,12 +5,12 @@ import txt_dict
 class Account(Utilities):
     def __init__(
             self,
-            my_account_number,
-            my_name,
-            my_account_password,
-            my_account_coins,
-            my_time,
-            my_mail
+            my_account_number: str,
+            my_name: str,
+            my_account_password: int,
+            my_account_coins: int,
+            my_time: int,
+            my_mail: str
                 ):
         """
             Initial four class Account params
@@ -32,12 +32,13 @@ class Account(Utilities):
         self.__mail = my_mail
 
     @classmethod
-    def create_name(cls):
+    def create_name(cls) -> str:
         """
             __name (type: String)
                 Create name for new account from two parts (first name and last name).\n
                 Both parts must have more than two and less than 50 alphabet sign.\n
-                This name used by client logs.
+                This name used by client logs.\n
+                :return name
 
         """
         Account.char_line('-', 65)
@@ -71,9 +72,10 @@ class Account(Utilities):
                     continue
 
     @classmethod
-    def create_iban(cls):
+    def create_iban(cls) -> str:
         """ Create new unique account value IBAN (International Bank Account Number)
-            https://uk.wikipedia.org/wiki/International_Bank_Account_Number
+            https://uk.wikipedia.org/wiki/International_Bank_Account_Number \n
+            :return IBAN
         """
         country_cod = 'UA'
         control_alpha = f'{Account.generate_alpha()}{Account.generate_alpha()}'
@@ -90,9 +92,10 @@ class Account(Utilities):
     @classmethod
     def create_password(cls):
         """
-            __account_password (type: String)\n
+            __account_password (type: int)\n
             Create and confirm a new account password.\n
             Contains ten numbers without a space.
+            :return confirm_password
         """
         while True:
             Account.char_line('-', 65)
@@ -106,8 +109,9 @@ class Account(Utilities):
                 print('PASSWORD COULD NOT CONFIRMED, TRY AGAIN.')
 
     @staticmethod
-    def create_email():
-        """Input email method"""
+    def create_email() -> str:
+        """Input email method,\n
+        :return tmp_email"""
         while True:
             try:
                 Account.char_line('-', 65)
@@ -145,11 +149,11 @@ class Account(Utilities):
 
     @property
     def client_balance(self):
-        """(type: String) Getter of client balance"""
+        """(type: int) Getter of client balance"""
         return self.__account_coins
 
     @client_balance.setter
-    def client_balance(self, val):
+    def client_balance(self, val: int):
         """(type: Setter) Setter of client balance"""
         self.__account_coins = val
 
@@ -157,6 +161,28 @@ class Account(Utilities):
     def client_email(self):
         """(type: String) Getter of client email"""
         return self.__mail
+
+    def multi_getter(self, parameter: str):
+        """
+        :param parameter: type of client params
+        :return: values of parameter
+        """
+        try:
+            if parameter == 'iban':
+                return self.__IBAN
+            elif parameter == 'name':
+                return self.__name
+            elif parameter == 'password':
+                return self.__account_password
+            elif parameter == 'coins':
+                return self.__account_coins
+            elif parameter == 'time':
+                return self.__time_deal
+            elif parameter == 'email':
+                return self.__mail
+        except Exception.args:
+            pass
+
 
     def show_person_info(self):
         """Show main account parameters"""

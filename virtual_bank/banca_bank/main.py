@@ -2,6 +2,8 @@ from banca_bank.account import Account
 from banca_bank.mysql_utilities import MySqlUtil
 from banca_bank.txt_dict import dictionary_of_visualisation
 
+msu = MySqlUtil
+
 
 def client_menu(param):
     """The clients menu\n
@@ -23,13 +25,13 @@ def client_menu(param):
             person.char_line('-', 65)
             money = input('PUT coins: ')
             person.put_coins_in_account(money)
-            MySqlUtil.update_person(param[0], param[1], param[2], int(person.client_balance), param[4], param[5])
+            msu.update_person(param[0], param[1], param[2], int(person.client_balance), param[4], param[5])
 
         elif menu_choice == '2':
             person.char_line('-', 65)
             money = input('GET coins: ')
             person.get_coins_in_account(money)
-            MySqlUtil.update_person(param[0], param[1], (param[2]), int(person.client_balance), param[4], param[5])
+            msu.update_person(param[0], param[1], (param[2]), int(person.client_balance), param[4], param[5])
 
         elif menu_choice == '3':
             person.char_line('-', 65)
@@ -40,15 +42,16 @@ def client_menu(param):
             key = person.close_acc()
 
             if key == 'YES':
-                MySqlUtil.del_person_acc(param[0])
+                msu.del_person_acc(param[0])
             else:
                 continue
 
             main_menu()
 
-        # Engineering function, hide realization, working only for debugging!
-        elif menu_choice == '7':
-            MySqlUtil.show_all()
+        # Open ifo-web
+        elif menu_choice == '9':
+            msu.open_info_web()
+
         # return to the MAIN menu
         elif menu_choice == '0':
             # person.char_line('-', 65)
@@ -73,13 +76,18 @@ def main_menu():
         if menu_choice == '1':
             while True:
                 iban = Account.create_iban()
-                if MySqlUtil.is_unique_iban(iban) is True:
+                if msu.is_unique_iban(iban) is True:
                     break
 
             param = iban, Account.create_name(), Account.create_password(), 0, 0, Account.create_email()
 
             Account.char_line('-', 65)
-            MySqlUtil.update_person(param[0], param[1], int(param[2]), param[3], param[4], param[5])
+            msu.update_person(param[0],
+                              param[1],
+                              param[2],
+                              param[3],
+                              param[4],
+                              param[5])
 
             client_menu(param)
 
@@ -102,8 +110,13 @@ you want to open: """)
                     choice = input()
                     if choice == 'E' or choice == 'e':
                         main_menu()
-            param = (MySqlUtil.params_from_iban(iban))
-            person = Account(param[0][0], param[0][1], param[0][2], param[0][3], param[0][4], param[0][5])
+            param = (msu.params_from_iban(iban))
+            person = Account(param[0][0],
+                             param[0][1],
+                             param[0][2],
+                             param[0][3],
+                             param[0][4],
+                             param[0][5])
             attempt_counter = 3
             while attempt_counter >= 0:
                 key = person.pass_valid(str(param[0][2]))
@@ -120,11 +133,16 @@ you want to open: """)
                     person.char_line('-', 65)
                     attempt_counter -= 1
                     if attempt_counter == 0:
-                        pass
-                       # MySqlUtil.mailer(person.client_email, 'Test text')
+                        msu.mailer(person.multi_getter('email'),
+                                   person.multi_getter('name'),
+                                   person.multi_getter('password'))
+                        print('We have sent password on your email.')
+                        main_menu()
+
+
         # Engineering function, hide realization, working only for debugging!
         elif menu_choice == '3':
-            MySqlUtil.show_all()
+            msu.show_all()
         # Exit
         elif menu_choice == '0':
             exit()

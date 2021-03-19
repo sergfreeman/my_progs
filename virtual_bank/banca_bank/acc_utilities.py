@@ -5,7 +5,7 @@ class Utilities:
     @staticmethod
     def generate_alpha():
         """(type: String) Generate random upper case literal from A to Z"""
-        return chr(randint(65, 91))
+        return chr(randint(65, 90))
 
     @staticmethod
     def generate_number():
