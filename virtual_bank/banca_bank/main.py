@@ -141,7 +141,7 @@ you want to open: """)
 
 
         # Engineering function, hide realization, working only for debugging!
-        elif menu_choice == '3':
+        elif menu_choice == 'show all':
             msu.show_all()
         # Exit
         elif menu_choice == '0':

@@ -46,6 +46,7 @@ class Account(Utilities):
         name = ''
 
         for part_of_name in ('first_name', 'last_name'):
+
             if part_of_name == 'first_name':
                 part_name = 'First name'
             else:
@@ -54,6 +55,7 @@ class Account(Utilities):
                 try:
                     print(f'{part_name} name is:', end='')
                     tmp_name = input()
+
                     if tmp_name != " " and len(tmp_name) in range(2, 50):
                         if tmp_name.isalpha():
                             name += tmp_name
@@ -82,6 +84,7 @@ class Account(Utilities):
         bank_code = '390465'
         five_zero = '00000'
         account_number = ''
+
         # for digit in range(13):
         while len(account_number) < 14:
             # account_number += str(Account.generate_number())
@@ -103,6 +106,7 @@ class Account(Utilities):
             cls.__account_password = cls.enter_password()
             print('CONFIRM YOUR PASSWORD')
             confirm_password = cls.enter_password()
+
             if cls.__account_password == confirm_password:
                 return confirm_password
             else:
@@ -164,8 +168,8 @@ class Account(Utilities):
 
     def multi_getter(self, parameter: str):
         """
-        :param parameter: type of client params
-        :return: values of parameter
+        :param parameter: type of client param
+        :return: value of parameter
         """
         try:
             if parameter == 'iban':
@@ -182,7 +186,6 @@ class Account(Utilities):
                 return self.__mail
         except Exception.args:
             pass
-
 
     def show_person_info(self):
         """Show main account parameters"""
