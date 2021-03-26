@@ -1,4 +1,5 @@
 from random import randint
+import datetime
 
 
 class Utilities:
@@ -55,3 +56,11 @@ class Utilities:
             except ValueError:
                 print("Type error")
         return int(tmp_password)
+
+    @staticmethod
+    def get_date():
+        """
+        Get current date
+        :return: value of date
+        """
+        return datetime.date.today()

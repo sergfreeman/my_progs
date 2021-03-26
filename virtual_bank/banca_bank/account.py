@@ -1,5 +1,6 @@
 from acc_utilities import Utilities
 import txt_dict
+from datetime import datetime
 
 
 class Account(Utilities):
@@ -9,7 +10,7 @@ class Account(Utilities):
             my_name: str,
             my_account_password: int,
             my_account_coins: int,
-            my_time: int,
+            my_time: str,
             my_mail: str
                 ):
         """
@@ -22,7 +23,10 @@ class Account(Utilities):
                     Password
                 __account_coins  (type: Integer)
                     Balance
-                __time_deal (type: Integer)
+                __time_deal (type: String)
+                    Registration date
+                __mail (type: String)
+                    Contact email
         """
         self.__name = my_name
         self.__IBAN = my_account_number
@@ -30,6 +34,9 @@ class Account(Utilities):
         self.__account_coins = my_account_coins
         self.__time_deal = my_time
         self.__mail = my_mail
+
+    # deposit interest per day
+    DEPOSIT_INTEREST = 1
 
     @classmethod
     def create_name(cls) -> str:
@@ -143,11 +150,12 @@ class Account(Utilities):
         |-----------------------------------------|     
         |        Private Client information       |
         |-----------------------------------------|
-            Client: {self.__name}
-              IBAN: {self.__IBAN}                
-          password: {self.__account_password}    
-             coins: {self.__account_coins} 
-            e-mail: {self.__mail}       
+             Client: {self.__name}
+               IBAN: {self.__IBAN}                
+           password: {self.__account_password}    
+              coins: {self.__account_coins} 
+         registered: {self.__time_deal}  
+             e-mail: {self.__mail}       
         |-----------------------------------------|
         """
 
@@ -184,6 +192,28 @@ class Account(Utilities):
                 return self.__time_deal
             elif parameter == 'email':
                 return self.__mail
+        except Exception.args:
+            pass
+
+    def multi_setter(self, parameter: str, value):
+        """
+        :param value:
+        :param parameter: type of client param
+        :return: value of parameter
+        """
+        try:
+            if parameter == 'iban':
+                self.__IBAN = value
+            elif parameter == 'name':
+                self.__name = value
+            elif parameter == 'password':
+                self.__account_password = value
+            elif parameter == 'coins':
+                self.__account_coins += value
+            elif parameter == 'time':
+                self.__time_deal = value
+            elif parameter == 'email':
+                self.__mail = value
         except Exception.args:
             pass
 
@@ -280,3 +310,4 @@ class Account(Utilities):
                 return 'NO'
             else:
                 print(txt_dict.dictionary_of_visualisation.get('CHOICE'))
+

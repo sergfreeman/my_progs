@@ -1,2 +1,4 @@
-print('Hello,World')
-input('enter so==--m text')
+import datetime
+x = datetime.date.today()
+
+print(x)

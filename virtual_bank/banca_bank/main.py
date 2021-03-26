@@ -2,6 +2,7 @@ from banca_bank.account import Account
 from banca_bank.mysql_utilities import MySqlUtil
 from banca_bank.txt_dict import dictionary_of_visualisation
 
+
 msu = MySqlUtil
 
 
@@ -16,7 +17,7 @@ def client_menu(param):
                          0   exit to the main menu\n
 
     """
-    person = Account(param[0], param[1], param[2], int(param[3]), int(param[4]), (param[5]))
+    person = Account(param[0], param[1], param[2], int(param[3]), (param[4]), (param[5]))
     while True:
         print(dictionary_of_visualisation['MENU_CLIENT'])
         menu_choice = input("Select number of operation: ")
@@ -24,6 +25,7 @@ def client_menu(param):
         if menu_choice == '1':
             person.char_line('-', 65)
             money = input('PUT coins: ')
+
             person.put_coins_in_account(money)
             msu.update_person(param[0], param[1], param[2], int(person.client_balance), param[4], param[5])
 
@@ -42,6 +44,7 @@ def client_menu(param):
             key = person.close_acc()
 
             if key == 'YES':
+
                 msu.del_person_acc(param[0])
             else:
                 continue
@@ -79,7 +82,13 @@ def main_menu():
                 if msu.is_unique_iban(iban) is True:
                     break
 
-            param = iban, Account.create_name(), Account.create_password(), 0, 0, Account.create_email()
+            name = Account.create_name()
+            password = Account.create_password()
+            coins = 0
+            date = Account.get_date()
+            mail = Account.create_email()
+
+            param = iban, name, password, coins, date, mail
 
             Account.char_line('-', 65)
             msu.update_person(param[0],
